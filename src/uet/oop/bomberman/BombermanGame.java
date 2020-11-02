@@ -40,8 +40,8 @@ public class BombermanGame extends Application  {
         Board board = new Board();
         board.createlever(1);
         ca = new Canvas(Sprite.SCALED_SIZE * board.getWidth(), Sprite.SCALED_SIZE * board.getHeight());
-//        board.setup();
-//        board.render();
+        board.setup();
+        board.render();
 
         // Tao root container
 
@@ -55,15 +55,15 @@ public class BombermanGame extends Application  {
         stage.setScene(scene);
         stage.show();
 
-        /*scene.setOnKeyPressed(
+        scene.setOnKeyPressed(
                 e -> {
                     String code = e.getCode().toString();
                     keyboard.put(code, true);
                     //board.setKeyboard(keyboard);
-                    //board.bomberman.setKey(keyboard);
-                    //board.update();
+                    board.bomberman.setKey(keyboard);
+                    board.update();
                     //board.renderbomber();
-                    //board.render();
+                    board.render();
 
                     System.out.println("test keyboard");
                 });
@@ -73,7 +73,7 @@ public class BombermanGame extends Application  {
                     keyboard.put(code, false);
                     //board.setKeyboard(keyboard);
                     //board.render();
-                });*/
+                });
 
         /*int d = 1;
         long last = System.nanoTime();
