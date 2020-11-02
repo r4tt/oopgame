@@ -7,39 +7,46 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
-import uet.oop.bomberman.entities.Bomber;
+import uet.oop.bomberman.control.Keyboard;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.Grass;
 import uet.oop.bomberman.entities.Wall;
+import uet.oop.bomberman.entities.alive.Bomber;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BombermanGame extends Application {
-    
-    public static final int WIDTH = 20;
-    public static final int HEIGHT = 15;
-    
+public class BombermanGame extends Application  {
+
+    public static final boolean _running = true;
+
     private GraphicsContext gc;
     private Canvas canvas;
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
+    private Keyboard keyboard = new Keyboard();
 
+    //public static GraphicsContext test;
+    public static Canvas ca;
 
     public static void main(String[] args) {
+    //    System.out.println("begin game");
         Application.launch(BombermanGame.class);
+
     }
 
-    @Override
     public void start(Stage stage) {
-        // Tao Canvas
-        canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
-        gc = canvas.getGraphicsContext2D();
+        Board board = new Board();
+        board.createlever(1);
+        ca = new Canvas(Sprite.SCALED_SIZE * board.getWidth(), Sprite.SCALED_SIZE * board.getHeight());
+        board.setup();
+        board.render();
 
         // Tao root container
+
         Group root = new Group();
-        root.getChildren().add(canvas);
+        root.getChildren().add(ca);
 
         // Tao scene
         Scene scene = new Scene(root);
@@ -48,47 +55,56 @@ public class BombermanGame extends Application {
         stage.setScene(scene);
         stage.show();
 
-        AnimationTimer timer = new AnimationTimer() {
-            @Override
-            public void handle(long l) {
-                render();
-                update();
+        scene.setOnKeyPressed(
+                e -> {
+                    String code = e.getCode().toString();
+                    keyboard.put(code, true);
+                    //board.setKeyboard(keyboard);
+                    board.bomberman.setKey(keyboard);
+                    board.update();
+                    //board.renderbomber();
+                    board.render();
+
+                    System.out.println("test keyboard");
+                });
+        scene.setOnKeyReleased(
+                e -> {
+                    String code = e.getCode().toString();
+                    keyboard.put(code, false);
+                    //board.setKeyboard(keyboard);
+                    board.bomberman.setKey(keyboard);
+                    //board.render();
+                });
+        /*int d = 1;
+        long last = System.nanoTime();
+        while (d <= 10) {
+            long now = System.nanoTime();
+            if (now - last >= 60) {
+                System.out.println(last + " " + now);
+                last = now;
+                d++;
             }
-        };
-        timer.start();
 
-        createMap();
+        }*/
 
-        Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
-        entities.add(bomberman);
+
+//        long bg = System.nanoTime();
+//        AnimationTimer timer = new AnimationTimer() {
+//            @Override
+//            public void handle(long l) {
+//                long cr = System.nanoTime();
+//                System.out.println(cr - bg);
+//                cr = bg;
+//
+//               // System.out.println("ss");
+//               // board.bomberman.setKey(keyboard);
+//               // board.update();
+//               // board.render();
+//            }
+//        };
+//        //timer.start();
+//        //timer.handle(1);
+
     }
 
-    public void createMap() {
-
-        for (int i = 0; i < WIDTH; i++) {
-            for (int j = 0; j < HEIGHT; j++) {
-                Entity object;
-                if (j == 0 || j == HEIGHT - 1 || i == 0 || i == WIDTH - 1) {
-                    object = new Wall(i, j, Sprite.wall.getFxImage());
-                }
-                else {
-                    object = new Grass(i, j, Sprite.grass.getFxImage());
-                }
-                //object = new Grass(i, j, Sprite.brick.getFxImage());
-                stillObjects.add(object);
-            }
-        }
-    }
-
-    public void update() {
-        entities.forEach(Entity::update);
-    }
-
-    public void render() {
-        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        stillObjects.forEach(g -> g.render(gc));
-        entities.forEach(g -> g.render(gc));
-        Entity ss = new Bomber(2, 2, Sprite.brick_exploded2.getFxImage());
-        //ss.render(gc);
-    }
 }

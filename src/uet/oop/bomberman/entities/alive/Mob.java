@@ -1,22 +1,21 @@
-package uet.oop.bomberman.entities;
+package uet.oop.bomberman.entities.alive;
 
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import uet.oop.bomberman.control.Keyboard;
+import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
 
-public abstract class Entity {
-    protected int x;
-    protected int y;
-    protected Image img;
+public abstract class Mob extends Entity {
 
-    public Entity( int x, int y, Image img) {
-        this.x = x;
-        this.y = y;
-        this.img = img;
+    public Mob(int x, int y, Image img) {
+        super( x, y, img);
     }
+
+    public abstract void update();
 
     public void render(GraphicsContext gc) {
         SnapshotParameters params = new SnapshotParameters();
@@ -25,7 +24,8 @@ public abstract class Entity {
         ImageView iv = new ImageView(img);
         Image base = iv.snapshot(params, null);
 
-        gc.drawImage(base, x * Sprite.SCALED_SIZE, y * Sprite.SCALED_SIZE);
+        gc.drawImage(base, x, y);
     }
-    public abstract void update();
+
+
 }

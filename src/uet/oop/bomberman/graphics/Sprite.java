@@ -8,6 +8,7 @@ import java.nio.IntBuffer;
 /**
  * Lưu trữ thông tin các pixel của 1 sprite (hình ảnh game)
  */
+
 public class Sprite {
 	
 	public static final int DEFAULT_SIZE = 16;
