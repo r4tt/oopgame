@@ -14,6 +14,7 @@ import uet.oop.bomberman.entities.Wall;
 import uet.oop.bomberman.entities.alive.Bomber;
 import uet.oop.bomberman.graphics.Sprite;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,10 +39,27 @@ public class BombermanGame extends Application  {
 
     public void start(Stage stage) {
         Board board = new Board();
-        board.createlever(1);
-        ca = new Canvas(Sprite.SCALED_SIZE * board.getWidth(), Sprite.SCALED_SIZE * board.getHeight());
+
+        try {
+            board.getWH(1);
+        }  catch(FileNotFoundException e) {
+            System.out.println("assss");
+        }
         board.setup();
+        ca = new Canvas(Sprite.SCALED_SIZE * board.getWidth(), Sprite.SCALED_SIZE * board.getHeight());
+
+        board.createMap();
         board.render();
+        board.renderEntity();
+
+        /*System.out.println(board.getHeight() + " " + board.getWidth());
+        for (int i = 0; i < board.getHeight(); i++) {
+            for (int j = 0; j < board.getWidth(); j++) {
+                System.out.print(Board.check[i][j] + " " );
+            }
+            System.out.println();
+        }*/
+
 
         // Tao root container
 
@@ -59,21 +77,21 @@ public class BombermanGame extends Application  {
                 e -> {
                     String code = e.getCode().toString();
                     keyboard.put(code, true);
-                    //board.setKeyboard(keyboard);
-                    board.bomberman.setKey(keyboard);
-                    board.update();
+                    board.setKeyboard(keyboard);
+                    //board.update();
                     //board.renderbomber();
-                    board.render();
+                    board.renderEntity();
 
-                    System.out.println("test keyboard");
+                    //System.out.println("test keyboard");
                 });
         scene.setOnKeyReleased(
                 e -> {
                     String code = e.getCode().toString();
                     keyboard.put(code, false);
-                    //board.setKeyboard(keyboard);
+                    board.setKeyboard(keyboard);
                     //board.render();
                 });
+
 
         /*int d = 1;
         long last = System.nanoTime();
