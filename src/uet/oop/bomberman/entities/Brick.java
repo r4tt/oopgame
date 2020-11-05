@@ -9,6 +9,11 @@ public class Brick extends Entity {
 
     @Override
     public void update() {
-
     }
+
+    public boolean equals(Object e) {
+        return  false;
+    }
+
+
 }

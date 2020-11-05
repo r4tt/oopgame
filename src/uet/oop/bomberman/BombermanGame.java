@@ -1,6 +1,5 @@
 package uet.oop.bomberman;
 
-import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -9,9 +8,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 import uet.oop.bomberman.control.Keyboard;
 import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.Grass;
-import uet.oop.bomberman.entities.Wall;
-import uet.oop.bomberman.entities.alive.Bomber;
+import uet.oop.bomberman.entities.alive.player.Bomber;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.io.FileNotFoundException;
@@ -28,6 +25,11 @@ public class BombermanGame extends Application  {
     private List<Entity> stillObjects = new ArrayList<>();
     private Keyboard keyboard = new Keyboard();
 
+    public static Bomber bomber;
+    public static int maxBomb = 1;
+    public static int speed = 1;
+    public static int flame = 1;
+
     //public static GraphicsContext test;
     public static Canvas ca;
 
@@ -38,6 +40,8 @@ public class BombermanGame extends Application  {
     }
 
     public void start(Stage stage) {
+        bomber = new Bomber(32, 32, Sprite.player_right.getFxImage(), 1, 1, 1);
+        System.out.println("ss " +BombermanGame.bomber.getMaxBomb());
         Board board = new Board();
 
         try {
@@ -47,22 +51,11 @@ public class BombermanGame extends Application  {
         }
         board.setup();
         ca = new Canvas(Sprite.SCALED_SIZE * board.getWidth(), Sprite.SCALED_SIZE * board.getHeight());
-
         board.createMap();
         board.render();
         board.renderEntity();
 
-        /*System.out.println(board.getHeight() + " " + board.getWidth());
-        for (int i = 0; i < board.getHeight(); i++) {
-            for (int j = 0; j < board.getWidth(); j++) {
-                System.out.print(Board.check[i][j] + " " );
-            }
-            System.out.println();
-        }*/
-
-
         // Tao root container
-
         Group root = new Group();
         root.getChildren().add(ca);
 
@@ -73,37 +66,23 @@ public class BombermanGame extends Application  {
         stage.setScene(scene);
         stage.show();
 
+
         scene.setOnKeyPressed(
                 e -> {
                     String code = e.getCode().toString();
                     keyboard.put(code, true);
                     board.setKeyboard(keyboard);
-                    //board.update();
-                    //board.renderbomber();
+                    bomber.setKey(keyboard);
                     board.renderEntity();
-
-                    //System.out.println("test keyboard");
                 });
         scene.setOnKeyReleased(
                 e -> {
                     String code = e.getCode().toString();
                     keyboard.put(code, false);
+                    bomber.setKey(keyboard);
                     board.setKeyboard(keyboard);
-                    //board.render();
                 });
-
-
-        /*int d = 1;
-        long last = System.nanoTime();
-        while (d <= 10) {
-            long now = System.nanoTime();
-            if (now - last >= 60) {
-                System.out.println(last + " " + now);
-                last = now;
-                d++;
-            }
-
-        }*/
+        System.out.println(bomber.getMaxBomb());
 
 
 //        long bg = System.nanoTime();

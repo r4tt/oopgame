@@ -5,6 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import uet.oop.bomberman.Board;
 import uet.oop.bomberman.graphics.Sprite;
 
 public abstract class Entity {
@@ -27,6 +28,14 @@ public abstract class Entity {
         gc.drawImage(base, y * Sprite.SCALED_SIZE, x * Sprite.SCALED_SIZE);
     }
     public abstract void update();
+    public abstract boolean equals(Object e);
+
+    public void remove() {
+        for (int i = 0; i < Board.entities.size(); i++)
+            if (equals(Board.entities.get(i))){
+                Board.entities.remove(i);
+            }
+    }
 
     public int getX() {
         return x;
@@ -43,4 +52,5 @@ public abstract class Entity {
     public void setY(int y) {
         this.y = y;
     }
+
 }

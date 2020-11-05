@@ -27,4 +27,8 @@ public class Grass extends Entity {
     public void update() {
 
     }
+
+    public boolean equals(Object e) {
+        return  false;
+    }
 }

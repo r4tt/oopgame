@@ -1,16 +1,14 @@
 package uet.oop.bomberman;
 
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.control.Keyboard;
 import uet.oop.bomberman.entities.Brick;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.Grass;
 import uet.oop.bomberman.entities.Wall;
-import uet.oop.bomberman.entities.alive.Bomber;
+import uet.oop.bomberman.entities.alive.player.Bomber;
 import uet.oop.bomberman.graphics.Sprite;
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -21,23 +19,15 @@ public class Board {
 
     private int _width;
     private int _height;
-    private List<Entity> entityList;
-    private List<Entity> entities = new ArrayList<>();
+    public static List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
 
     private Keyboard keyboard = new Keyboard();
-    private GraphicsContext gc;
-    public static Bomber bomberman;
+    public static GraphicsContext gc;
 
     public static int[][] check = new int[100][100];
 
     Scanner scanner;
-
-
-    public Board() {
-        entityList = new ArrayList<>();
-        stillObjects = new ArrayList<>();
-    }
 
     void getWH(int lever) throws FileNotFoundException {
         String mapPath = "test.txt";
@@ -93,38 +83,34 @@ public class Board {
                     check[i][j] = 9;
                     continue;
                 }
-
-                //System.out.println("ss");
-                //object.render(gc);
                 stillObjects.add(object);
-                //System.out.print(c);
             }
-            //System.out.println();
         }
         scanner.close();
 
     }
 
     public void setup() {
-        for (int i = 0; i < 50; i++)
-            for (int j = 0; j < 50; j++)
+        for (int i = 0; i < 50; i++) {
+            for (int j = 0; j < 50; j++) {
                 check[i][j] = 0;
-        bomberman = new Bomber(32, 32, Sprite.player_right.getFxImage());
-        entities.add(bomberman);
+            }
+        }
+        entities.clear();
+        stillObjects.clear();
+        System.out.println("ss1 " +BombermanGame.bomber.getMaxBomb());
+        entities.add(BombermanGame.bomber);
+        System.out.println("ss2 " +BombermanGame.bomber.getMaxBomb());
         keyboard = new Keyboard();
     }
 
     public void update() {
-        bomberman.setKey(keyboard);
         entities.forEach(Entity::update);
     }
 
     public void render() {
         gc.clearRect(0, 0, BombermanGame.ca.getWidth(), BombermanGame.ca.getHeight());
         stillObjects.forEach(g -> g.render(gc));
-        //entities.forEach(g -> g.render(gc));
-        //Entity ss =  new Bomber(32 * 2, 32, Sprite.player_right.getFxImage());
-        //ss.render(gc);
     }
 
     public void renderEntity() {
@@ -133,9 +119,10 @@ public class Board {
             Entity delTrace = new Grass(tmp.getX(), tmp.getY(), Sprite.grass.getFxImage());
             delTrace.render(gc);
         }
-        update();
-        entities.forEach(g -> g.render(gc));
 
+        update();
+        System.out.println(entities.size());
+        entities.forEach(g -> g.render(gc));
     }
 
     public Keyboard getKeyboard() {

@@ -12,4 +12,8 @@ public class Wall extends Entity {
     public void update() {
 
     }
+
+    public boolean equals(Object e) {
+        return  false;
+    }
 }
