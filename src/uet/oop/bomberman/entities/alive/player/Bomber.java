@@ -25,10 +25,10 @@ public class Bomber extends Mob {
     protected int cntbomb = 0;
     protected int h = 15;
     protected int w = 12;
-    protected static List<Entity> bombList = new ArrayList<>();
+    public static List<Bomb> bombList = new ArrayList<>();
 
-    public Bomber(int x, int y, Image img, int speed, int maxBomb, int flame) {
-        super( x, y, img);
+    public Bomber(int x, int y, Image img, Sprite sprite, int speed, int maxBomb, int flame) {
+        super( x, y, img, sprite);
         this.speed = speed;
         this.maxBomb = maxBomb;
         this.flame = flame;
@@ -37,6 +37,12 @@ public class Bomber extends Mob {
     @Override
     public void update() {
         bombList.forEach(Entity::update);
+        for (int i = 0; i < bombList.size(); i++) {
+            if (bombList.get(i).isExploded() == true) {
+                bombList.remove(i);
+                cntbomb--;
+            }
+        }
         if (key.space)
             putbomb();
         if (key.down || key.up || key.left || key.right)
@@ -44,30 +50,54 @@ public class Bomber extends Mob {
     }
 
     void putbomb() {
-        System.out.println("ss "+ cntbomb +" " + maxBomb);
         if (cntbomb == maxBomb) {
             return;
         }
-        Entity bomb = new Bomb(x/32, y/32, Sprite.bomb.getFxImage() ,flame);
+        cntbomb++;
+        int bombidx = x/32;
+        int bombidy = y/32;
+        Bomb bomb = new Bomb(bombidx * Sprite.SCALED_SIZE, bombidy * Sprite.SCALED_SIZE, Sprite.bomb.getFxImage(), Sprite.bomb,flame);
         bomb.render(Board.gc);
         bombList.add(bomb);
+    }
+
+    public boolean checkmovefull(int xx, int yy) {
+        if (checkmove(xx, yy) == false) return false;
+        for (int i = 0; i < bombList.size(); i++) {
+            Bomb tmp = bombList.get(i);
+            if (tmp.isExploded() == true) {
+                continue;
+            }
+            x += xx;
+            y += yy;
+            boolean check = this.checkcollision(tmp);
+            x -= xx;
+            y -= yy;
+            //System.out.println(check);
+            if (check == true) {
+                tmp.setInvisible(false);
+            } else {
+                if (tmp.isInvisible() == false)
+                    return false;
+            }
+
+        }
+        return true;
     }
 
     public void move() {
         int xx = 0;
         int yy = 0;
-        if (key.down) xx = xx + 4;
-        if (key.up) xx = xx - 4;
-        if (key.left) yy = yy - 4;
-        if (key.right) yy = yy + 4;
-        if (checkmove(xx, yy)) {
+        if (key.down) xx = xx + 2 * speed;
+        if (key.up) xx = xx - 2 * speed;
+        if (key.left) yy = yy - 2 * speed;
+        if (key.right) yy = yy + 2 * speed;
+        if (checkmovefull(xx, yy)) {
             x += xx;
             y += yy;
             isMoved = true;
         }
-
         //System.out.println("check udmove " + x + " "+ y + " " + xx +" " + yy);
-
     }
 
 

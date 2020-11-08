@@ -130,7 +130,11 @@ public class Sprite {
 	public static Sprite bomb = new Sprite(DEFAULT_SIZE, 0, 3, SpriteSheet.tiles, 15, 15);
 	public static Sprite bomb_1 = new Sprite(DEFAULT_SIZE, 1, 3, SpriteSheet.tiles, 13, 15);
 	public static Sprite bomb_2 = new Sprite(DEFAULT_SIZE, 2, 3, SpriteSheet.tiles, 12, 14);
-	
+//	public static Sprite bomb = new Sprite(DEFAULT_SIZE, 0, 3, SpriteSheet.tiles, 16, 16);
+//	public static Sprite bomb_1 = new Sprite(DEFAULT_SIZE, 1, 3, SpriteSheet.tiles, 16, 16);
+//	public static Sprite bomb_2 = new Sprite(DEFAULT_SIZE, 2, 3, SpriteSheet.tiles, 16, 16);
+
+
 	/*
 	|--------------------------------------------------------------------------
 	| FlameSegment Sprites
@@ -236,7 +240,23 @@ public class Sprite {
 		int diff = time / 2;
 		return (animate % time > diff) ? x1 : x2; 
 	}
-	
+
+	public int get_realWidth() {
+		return _realWidth;
+	}
+
+	public void set_realWidth(int _realWidth) {
+		this._realWidth = _realWidth;
+	}
+
+	public int get_realHeight() {
+		return _realHeight;
+	}
+
+	public void set_realHeight(int _realHeight) {
+		this._realHeight = _realHeight;
+	}
+
 	public int getSize() {
 		return SIZE;
 	}
@@ -288,4 +308,6 @@ public class Sprite {
 
 		return output;
 	}
+
+
 }

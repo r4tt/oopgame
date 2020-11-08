@@ -7,6 +7,7 @@ import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.Grass;
 import uet.oop.bomberman.entities.Wall;
 import uet.oop.bomberman.entities.alive.player.Bomber;
+import uet.oop.bomberman.entities.alive.player.bomb.Bomb;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.io.File;
@@ -45,40 +46,40 @@ public class Board {
         for (int i = 0; i < _height; i++) {
             String s = scanner.nextLine();
             for (int j = 0; j < _width; j++) {
-                Entity object = new Grass(i * 32, j * 32, Sprite.grass.getFxImage());
+                Entity object = new Grass(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.grass.getFxImage(), Sprite.grass);
                 char c = s.charAt(j);
                 if (c == '#') {
-                    object  = new Wall(i, j, Sprite.wall.getFxImage());
+                    object  = new Wall(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.wall.getFxImage(), Sprite.wall);
                     stillObjects.add(object);
                     check[i][j] = 5;
                     continue;
                 }
                 if (c == '*') {
-                    object = new Brick(i, j, Sprite.brick.getFxImage());
+                    object = new Brick(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.brick.getFxImage(), Sprite.brick);
                     stillObjects.add(object);
                     check[i][j] = 6;
                     continue;
                 }
                 if (c == 'x') {
-                    object = new Brick(i, j, Sprite.brick.getFxImage());
+                    object = new Brick(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.brick.getFxImage(), Sprite.brick);
                     stillObjects.add(object);
                     check[i][j] = 10;
                     continue;
                 }
                 if (c == 's') {
-                    object = new Brick(i, j, Sprite.brick.getFxImage());
+                    object = new Brick(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.brick.getFxImage(), Sprite.brick);
                     stillObjects.add(object);
                     check[i][j] = 7;
                     continue;
                 }
                 if (c == 'f') {
-                    object = new Brick(i, j, Sprite.brick.getFxImage());
+                    object = new Brick(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.brick.getFxImage(), Sprite.brick);
                     stillObjects.add(object);
                     check[i][j] = 8;
                     continue;
                 }
                 if (c == 'b') {
-                    object = new Brick(i, j, Sprite.brick.getFxImage());
+                    object = new Brick(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.brick.getFxImage(), Sprite.brick);
                     stillObjects.add(object);
                     check[i][j] = 9;
                     continue;
@@ -98,9 +99,7 @@ public class Board {
         }
         entities.clear();
         stillObjects.clear();
-        System.out.println("ss1 " +BombermanGame.bomber.getMaxBomb());
         entities.add(BombermanGame.bomber);
-        System.out.println("ss2 " +BombermanGame.bomber.getMaxBomb());
         keyboard = new Keyboard();
     }
 
@@ -113,15 +112,20 @@ public class Board {
         stillObjects.forEach(g -> g.render(gc));
     }
 
+    public void renderall() {
+        gc.clearRect(0, 0, BombermanGame.ca.getWidth(), BombermanGame.ca.getHeight());
+        stillObjects.forEach(g -> g.render(gc));
+        entities.forEach(g -> g.render(gc));
+        Bomber.bombList.forEach(g -> g.render(gc));
+    }
+
     public void renderEntity() {
         for (int i = 0; i < entities.size(); i++) {
             Entity tmp = entities.get(i);
-            Entity delTrace = new Grass(tmp.getX(), tmp.getY(), Sprite.grass.getFxImage());
+            Entity delTrace = new Grass(tmp.getX(), tmp.getY(), Sprite.grass.getFxImage(), Sprite.grass);
             delTrace.render(gc);
         }
-
         update();
-        System.out.println(entities.size());
         entities.forEach(g -> g.render(gc));
     }
 

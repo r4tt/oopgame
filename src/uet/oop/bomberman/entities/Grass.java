@@ -9,18 +9,20 @@ import uet.oop.bomberman.graphics.Sprite;
 
 public class Grass extends Entity {
 
-    public Grass(int x, int y, Image img) {
-        super(x, y, img);
+    public Grass(int x, int y, Image img, Sprite sprite) {
+        super(x, y, img, sprite);
     }
 
+
     public void render(GraphicsContext gc) {
-        SnapshotParameters params = new SnapshotParameters();
+        /*SnapshotParameters params = new SnapshotParameters();
         params.setFill(Color.TRANSPARENT);
 
         ImageView iv = new ImageView(img);
         Image base = iv.snapshot(params, null);
 
-        gc.drawImage(base, y, x);
+        gc.drawImage(base, y, x);*/
+        gc.drawImage(img, y, x);
     }
 
     @Override

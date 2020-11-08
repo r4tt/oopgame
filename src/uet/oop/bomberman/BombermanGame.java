@@ -1,5 +1,6 @@
 package uet.oop.bomberman;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -40,8 +41,8 @@ public class BombermanGame extends Application  {
     }
 
     public void start(Stage stage) {
-        bomber = new Bomber(32, 32, Sprite.player_right.getFxImage(), 1, 1, 1);
-        System.out.println("ss " +BombermanGame.bomber.getMaxBomb());
+        bomber = new Bomber(32, 32, Sprite.player_right.getFxImage(), Sprite.player_right, 1, 1, 1);
+
         Board board = new Board();
 
         try {
@@ -52,8 +53,8 @@ public class BombermanGame extends Application  {
         board.setup();
         ca = new Canvas(Sprite.SCALED_SIZE * board.getWidth(), Sprite.SCALED_SIZE * board.getHeight());
         board.createMap();
-        board.render();
-        board.renderEntity();
+        board.renderall();
+        //board.renderEntity();
 
         // Tao root container
         Group root = new Group();
@@ -73,7 +74,9 @@ public class BombermanGame extends Application  {
                     keyboard.put(code, true);
                     board.setKeyboard(keyboard);
                     bomber.setKey(keyboard);
-                    board.renderEntity();
+                    //board.renderEntity();
+                    //board.update();
+                    //board.renderall();
                 });
         scene.setOnKeyReleased(
                 e -> {
@@ -82,25 +85,29 @@ public class BombermanGame extends Application  {
                     bomber.setKey(keyboard);
                     board.setKeyboard(keyboard);
                 });
-        System.out.println(bomber.getMaxBomb());
 
 
-//        long bg = System.nanoTime();
-//        AnimationTimer timer = new AnimationTimer() {
-//            @Override
-//            public void handle(long l) {
-//                long cr = System.nanoTime();
-//                System.out.println(cr - bg);
-//                cr = bg;
-//
-//               // System.out.println("ss");
-//               // board.bomberman.setKey(keyboard);
-//               // board.update();
-//               // board.render();
-//            }
-//        };
-//        //timer.start();
-//        //timer.handle(1);
+        long bg = System.nanoTime();
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                /*long cr = System.nanoTime();
+                if (cr - bg == 60) {
+                 //   System.out.println(cr - bg);
+                    board.update();
+                    board.renderall();
+                }
+                cr = bg;
+                */
+
+                board.update();
+                board.renderall();
+                //System.out.println("ss");
+            }
+        };
+        timer.start();
+
+
 
     }
 
