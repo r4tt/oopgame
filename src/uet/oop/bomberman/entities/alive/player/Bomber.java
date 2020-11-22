@@ -96,40 +96,6 @@ public class Bomber extends Mob {
 
     /*
     |--------------------------------------------------------------------------
-    | Mob Sprite
-    |--------------------------------------------------------------------------
-     */
-
-    private void chooseSprite() {
-        //System.out.println(isMoved);
-        if (direction == 3) {
-                sprite = Sprite.player_up;
-                if(isMoved) {
-                    sprite = Sprite.movingSprite(Sprite.player_up_1, Sprite.player_up_2, _animate, 20);
-                }
-        }
-        if (direction == 1) {
-            sprite = Sprite.player_right;
-            if (isMoved) {
-                sprite = Sprite.movingSprite(Sprite.player_right_1, Sprite.player_right_2, _animate, 20);
-            }
-        }
-        if (direction == 4) {
-                sprite = Sprite.player_down;
-                if(isMoved) {
-                    sprite = Sprite.movingSprite(Sprite.player_down_1, Sprite.player_down_2, _animate, 20);
-                }
-        }
-        if (direction == 2) {
-                sprite = Sprite.player_left;
-                if(isMoved) {
-                    sprite = Sprite.movingSprite(Sprite.player_left_1, Sprite.player_left_2, _animate, 20);
-                }
-        }
-    }
-
-    /*
-    |--------------------------------------------------------------------------
     | Checkmove and Move
     |--------------------------------------------------------------------------
      */
@@ -174,6 +140,42 @@ public class Bomber extends Mob {
         }
 
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Mob Sprite
+    |--------------------------------------------------------------------------
+     */
+
+    private void chooseSprite() {
+        //System.out.println(isMoved);
+        if (direction == 3) {
+                sprite = Sprite.player_up;
+                if(isMoved) {
+                    sprite = Sprite.movingSprite(Sprite.player_up_1, Sprite.player_up_2, _animate, 20);
+                }
+        }
+        if (direction == 1) {
+            sprite = Sprite.player_right;
+            if (isMoved) {
+                sprite = Sprite.movingSprite(Sprite.player_right_1, Sprite.player_right_2, _animate, 20);
+            }
+        }
+        if (direction == 4) {
+                sprite = Sprite.player_down;
+                if(isMoved) {
+                    sprite = Sprite.movingSprite(Sprite.player_down_1, Sprite.player_down_2, _animate, 20);
+                }
+        }
+        if (direction == 2) {
+                sprite = Sprite.player_left;
+                if(isMoved) {
+                    sprite = Sprite.movingSprite(Sprite.player_left_1, Sprite.player_left_2, _animate, 20);
+                }
+        }
+    }
+
 
     /*
     |--------------------------------------------------------------------------

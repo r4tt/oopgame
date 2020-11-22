@@ -116,6 +116,7 @@ public class Board {
     }
 
     public void update() {
+        //System.out.println(entities.size());
         entities.forEach(Entity::update);
     }
 
