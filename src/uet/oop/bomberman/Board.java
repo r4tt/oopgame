@@ -6,6 +6,8 @@ import uet.oop.bomberman.entities.Brick;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.Grass;
 import uet.oop.bomberman.entities.Wall;
+import uet.oop.bomberman.entities.alive.enemy.Balloon;
+import uet.oop.bomberman.entities.alive.enemy.Oneal;
 import uet.oop.bomberman.entities.alive.player.Bomber;
 import uet.oop.bomberman.entities.alive.player.bomb.Bomb;
 import uet.oop.bomberman.graphics.Sprite;
@@ -85,7 +87,17 @@ public class Board {
                     continue;
                 }
                 stillObjects.add(object);
-            }
+                if (c == '1') {
+                    object = new Balloon(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.balloom_left1.getFxImage(), Sprite.balloom_left1);
+                    entities.add(object);
+                    continue;
+                }
+                if (c == '2') {
+                    object = new Oneal(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.oneal_left1.getFxImage(), Sprite.oneal_left1);
+                    entities.add(object);
+                    continue;
+                }
+              }
         }
         scanner.close();
 

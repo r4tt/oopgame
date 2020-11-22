@@ -48,7 +48,7 @@ public class BombermanGame extends Application  {
         try {
             board.getWH(1);
         }  catch(FileNotFoundException e) {
-            System.out.println("assss");
+            //System.out.println("assss");
         }
         board.setup();
         ca = new Canvas(Sprite.SCALED_SIZE * board.getWidth(), Sprite.SCALED_SIZE * board.getHeight());
@@ -99,7 +99,6 @@ public class BombermanGame extends Application  {
                 }
                 cr = bg;
                 */
-
                 board.update();
                 board.renderall();
                 //System.out.println("ss");

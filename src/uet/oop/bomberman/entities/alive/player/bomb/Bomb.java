@@ -1,7 +1,9 @@
 package uet.oop.bomberman.entities.alive.player.bomb;
 
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.Board;
+import uet.oop.bomberman.entities.Animated;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.Grass;
 import uet.oop.bomberman.entities.alive.player.Bomber;
@@ -10,7 +12,7 @@ import uet.oop.bomberman.graphics.Sprite;
 import java.awt.*;
 import java.util.Objects;
 
-public class Bomb extends Entity {
+public class Bomb extends Animated {
 
     protected int timeToExplode = 120;
     public int timeAfterExplode = 20;
@@ -21,6 +23,10 @@ public class Bomb extends Entity {
     public Bomb(int x, int y, Image img, Sprite sprite, int flame) {
         super(x, y, img, sprite);
         this.flame = flame;
+    }
+
+    public Bomb(int x, int y, Image img, Sprite sprite) {
+        super(x, y, img, sprite);
     }
 
     @Override
@@ -48,6 +54,18 @@ public class Bomb extends Entity {
             }
         }
     }
+
+    public void render(GraphicsContext gc) {
+        /*SnapshotParameters params = new SnapshotParameters();
+        params.setFill(Color.TRANSPARENT);
+        ImageView iv = new ImageView(img);
+        Image base = iv.snapshot(params, null);
+        gc.drawImage(base, y * Sprite.SCALED_SIZE, x * Sprite.SCALED_SIZE);*/
+        sprite = Sprite.movingSprite(Sprite.bomb, Sprite.bomb_1, Sprite.bomb_2, _animate, 60);
+        animate();
+        gc.drawImage(sprite.getFxImage(), y, x);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

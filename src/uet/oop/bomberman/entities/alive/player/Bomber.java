@@ -23,8 +23,7 @@ public class Bomber extends Mob {
     protected int maxBomb;
     protected int flame;
     protected int cntbomb = 0;
-    protected int h = 15;
-    protected int w = 12;
+    protected int direction = 1;
     public static List<Bomb> bombList = new ArrayList<>();
 
     public Bomber(int x, int y, Image img, Sprite sprite, int speed, int maxBomb, int flame) {
@@ -34,8 +33,20 @@ public class Bomber extends Mob {
         this.flame = flame;
     }
 
+    public Bomber(int x, int y, Image img, Sprite sprite) {
+        super( x, y, img, sprite);
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Update and Render
+    |--------------------------------------------------------------------------
+     */
+
     @Override
     public void update() {
+        isMoved = false;
         bombList.forEach(Entity::update);
         for (int i = 0; i < bombList.size(); i++) {
             if (bombList.get(i).isExploded() == true) {
@@ -45,9 +56,31 @@ public class Bomber extends Mob {
         }
         if (key.space)
             putbomb();
-        if (key.down || key.up || key.left || key.right)
+        if (key.down || key.up || key.left || key.right) {
+            if (key.right) direction = 1;
+            if (key.left) direction = 2;
+            if (key.up) direction = 3;
+            if (key.down) direction = 4;
             move();
+        }
     }
+
+    public void render(GraphicsContext gc) {
+        /*SnapshotParameters params = new SnapshotParameters();
+        params.setFill(Color.TRANSPARENT);
+        ImageView iv = new ImageView(img);
+        Image base = iv.snapshot(params, null);
+        gc.drawImage(base, y, x);*/
+        chooseSprite();
+        animate();
+        gc.drawImage(sprite.getFxImage(), y, x);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Putbomb
+    |--------------------------------------------------------------------------
+     */
 
     void putbomb() {
         if (cntbomb == maxBomb) {
@@ -60,6 +93,46 @@ public class Bomber extends Mob {
         bomb.render(Board.gc);
         bombList.add(bomb);
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Mob Sprite
+    |--------------------------------------------------------------------------
+     */
+
+    private void chooseSprite() {
+        //System.out.println(isMoved);
+        if (direction == 3) {
+                sprite = Sprite.player_up;
+                if(isMoved) {
+                    sprite = Sprite.movingSprite(Sprite.player_up_1, Sprite.player_up_2, _animate, 20);
+                }
+        }
+        if (direction == 1) {
+            sprite = Sprite.player_right;
+            if (isMoved) {
+                sprite = Sprite.movingSprite(Sprite.player_right_1, Sprite.player_right_2, _animate, 20);
+            }
+        }
+        if (direction == 4) {
+                sprite = Sprite.player_down;
+                if(isMoved) {
+                    sprite = Sprite.movingSprite(Sprite.player_down_1, Sprite.player_down_2, _animate, 20);
+                }
+        }
+        if (direction == 2) {
+                sprite = Sprite.player_left;
+                if(isMoved) {
+                    sprite = Sprite.movingSprite(Sprite.player_left_1, Sprite.player_left_2, _animate, 20);
+                }
+        }
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Checkmove and Move
+    |--------------------------------------------------------------------------
+     */
 
     public boolean checkmovefull(int xx, int yy) {
         if (checkmove(xx, yy) == false) return false;
@@ -96,10 +169,17 @@ public class Bomber extends Mob {
             x += xx;
             y += yy;
             isMoved = true;
+        } else {
+            isMoved = false;
         }
-        //System.out.println("check udmove " + x + " "+ y + " " + xx +" " + yy);
+
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | getter setter
+    |--------------------------------------------------------------------------
+     */
 
     public int getSpeed() {
         return speed;

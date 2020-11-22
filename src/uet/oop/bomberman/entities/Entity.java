@@ -58,16 +58,6 @@ public abstract class Entity {
     public abstract void update();
     public abstract boolean equals(Object e);
 
-    public void remove() {
-        System.out.println("ss");
-        for (int i = 0; i < Board.entities.size(); i++)
-            if (equals(Board.entities.get(i))){
-                Board.entities.remove(i);
-            }
-    }
-
-
-
     public int getX() {
         return x;
     }
