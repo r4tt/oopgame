@@ -26,6 +26,7 @@ public class BombermanGame extends Application  {
     private List<Entity> stillObjects = new ArrayList<>();
     private Keyboard keyboard = new Keyboard();
 
+    public static Board board = new Board();
     public static Bomber bomber;
     public static int maxBomb = 1;
     public static int speed = 1;
@@ -41,9 +42,9 @@ public class BombermanGame extends Application  {
     }
 
     public void start(Stage stage) {
-        bomber = new Bomber(32, 32, Sprite.player_right.getFxImage(), Sprite.player_right, 1, 1, 1);
+        bomber = new Bomber(32, 32, Sprite.player_right.getFxImage(), Sprite.player_right, 1, 5, 2);
 
-        Board board = new Board();
+        board = new Board();
 
         try {
             board.getWH(1);

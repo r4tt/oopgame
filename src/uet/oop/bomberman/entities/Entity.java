@@ -11,6 +11,7 @@ import uet.oop.bomberman.graphics.Sprite;
 public abstract class Entity {
     protected int x;
     protected int y;
+    protected boolean alive = true;
     protected Sprite sprite;
     protected Image img;
 
@@ -88,5 +89,13 @@ public abstract class Entity {
 
     public void setImg(Image img) {
         this.img = img;
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
     }
 }

@@ -15,7 +15,6 @@ public abstract class Enemy extends Mob {
 
     protected AI ai;
     protected int direction = 1;
-    protected boolean alive = true;
     protected boolean isMove = true;
     protected int speed = 1;
 
@@ -27,7 +26,7 @@ public abstract class Enemy extends Mob {
 
     public Enemy(int x, int y, Image img, Sprite sprite) {
         super( x, y, img, sprite);
-        MAX_STEPS =  2 * 32 / speed;
+        MAX_STEPS = 32 / speed;
         rest = (MAX_STEPS - (int) MAX_STEPS) / MAX_STEPS;
         _steps = MAX_STEPS;
     }
@@ -103,7 +102,7 @@ public abstract class Enemy extends Mob {
         }
         calculateMove();
     }
-
+ 
     public void render(GraphicsContext gc) {
         chooseSprite();
         gc.drawImage(sprite.getFxImage(), y, x);
@@ -111,3 +110,4 @@ public abstract class Enemy extends Mob {
 
     protected abstract void chooseSprite();
 }
+    

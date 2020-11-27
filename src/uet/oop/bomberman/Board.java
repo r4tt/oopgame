@@ -24,6 +24,7 @@ public class Board {
     private int _height;
     public static List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
+    private List<Entity> backGround = new ArrayList<>();
 
     private Keyboard keyboard = new Keyboard();
     public static GraphicsContext gc;
@@ -34,7 +35,7 @@ public class Board {
 
     void getWH(int lever) throws FileNotFoundException {
         String mapPath = "test.txt";
-        scanner = new Scanner(new File("E:\\New folder (2)\\code\\JV\\bomberman-starter-starter-2\\res\\levels\\Level1.txt"));
+        scanner = new Scanner(new File("res\\levels\\Level1.txt"));
         int n = 0;
         n = scanner.nextInt();
         _height = scanner.nextInt();
@@ -49,10 +50,11 @@ public class Board {
             String s = scanner.nextLine();
             for (int j = 0; j < _width; j++) {
                 Entity object = new Grass(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.grass.getFxImage(), Sprite.grass);
+                backGround.add(object);
                 char c = s.charAt(j);
                 if (c == '#') {
                     object  = new Wall(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.wall.getFxImage(), Sprite.wall);
-                    stillObjects.add(object);
+                    backGround.add(object);
                     check[i][j] = 5;
                     continue;
                 }
@@ -86,7 +88,6 @@ public class Board {
                     check[i][j] = 9;
                     continue;
                 }
-                stillObjects.add(object);
                 if (c == '1') {
                     object = new Balloon(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.balloom_left1.getFxImage(), Sprite.balloom_left1);
                     entities.add(object);
@@ -115,18 +116,44 @@ public class Board {
         keyboard = new Keyboard();
     }
 
-    public void update() {
-        //System.out.println(entities.size());
-        entities.forEach(Entity::update);
+
+    public void updatebomb(int x, int y) {
+        if (check[x / 32][y / 32] > 5) {
+            updateObjects(x , y);
+        }
     }
 
-    public void render() {
-        gc.clearRect(0, 0, BombermanGame.ca.getWidth(), BombermanGame.ca.getHeight());
-        stillObjects.forEach(g -> g.render(gc));
+    public void updatemod(int x, int y) {
+
+    }
+    public void updateObjects(int x, int y) {
+        for (int i = 0; i < stillObjects.size(); i++) {
+            Entity tmp = stillObjects.get(i);
+            if (tmp.getX() == x && tmp.getY() == y && tmp.isAlive() == true) {
+                tmp.setAlive(false);
+                break;
+            }
+        }
+    }
+
+    public void update() {
+        entities.forEach(Entity::update);
+        for (int i = 0; i < stillObjects.size(); i++) {
+            Brick tmp = (Brick) stillObjects.get(i);
+            tmp.update();
+            if (tmp.getTime() == 0) {
+                int tmpx, tmpy;
+                tmpx = tmp.getX();
+                tmpy = tmp.getY();
+                check[tmpx / 32][tmpy / 32] -= 6;
+                stillObjects.remove(i);
+            }
+        }
     }
 
     public void renderall() {
         gc.clearRect(0, 0, BombermanGame.ca.getWidth(), BombermanGame.ca.getHeight());
+        backGround.forEach(g -> g.render(gc));
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
         Bomber.bombList.forEach(g -> g.render(gc));

@@ -83,12 +83,19 @@ public class Bomber extends Mob {
      */
 
     void putbomb() {
+        int bombidx = (x + sprite.get_realHeight() - 1) / 32;
+        int bombidy = (y + sprite.get_realWidth() - 1) / 32;
+        for (int i = 0; i < bombList.size(); i++) {
+            Entity tmp = bombList.get(i);
+            if (tmp.getY() == bombidy * 32 && tmp.getX() == bombidx * 32)
+                return;
+        }
+
         if (cntbomb == maxBomb) {
             return;
-        }
+          }
         cntbomb++;
-        int bombidx = x/32;
-        int bombidy = y/32;
+
         Bomb bomb = new Bomb(bombidx * Sprite.SCALED_SIZE, bombidy * Sprite.SCALED_SIZE, Sprite.bomb.getFxImage(), Sprite.bomb,flame);
         bomb.render(Board.gc);
         bombList.add(bomb);
@@ -101,7 +108,13 @@ public class Bomber extends Mob {
      */
 
     public boolean checkmovefull(int xx, int yy) {
-        if (checkmove(xx, yy) == false) return false;
+        x += 2;
+        if (checkmove(xx, yy) == false) {
+            x -= 2;
+            return false;
+        }
+        x -= 2;
+
         for (int i = 0; i < bombList.size(); i++) {
             Bomb tmp = bombList.get(i);
             if (tmp.isExploded() == true) {
