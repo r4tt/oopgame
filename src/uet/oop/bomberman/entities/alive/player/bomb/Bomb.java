@@ -89,6 +89,7 @@ public class Bomb extends Animated {
         animate();
         if (timeToExplode == 0) {
             gc.drawImage(Sprite.bomb_exploded.getFxImage(), y, x);
+            BombermanGame.board.updatebomb(x, y);
             renderx(gc, -1);
             renderx(gc, 1);
             rendery(gc, 1);

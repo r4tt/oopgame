@@ -40,6 +40,7 @@ public abstract class Enemy extends Mob {
 	 */
 
     public void calculateMove() {
+        if (alive == false) return;
         int xx = 0;
         int yy = 0;
         if(_steps <= 0){
@@ -98,13 +99,16 @@ public abstract class Enemy extends Mob {
 
         animate();
         if (alive == false) {
+            time--;
             return;
         }
         calculateMove();
     }
- 
+
     public void render(GraphicsContext gc) {
-        chooseSprite();
+        if (alive == false) {
+            sprite = Sprite.movingSprite(Sprite.mob_dead1, Sprite.mob_dead2, Sprite.mob_dead3, _animate, 60);
+        } else chooseSprite();
         gc.drawImage(sprite.getFxImage(), y, x);
     }
 

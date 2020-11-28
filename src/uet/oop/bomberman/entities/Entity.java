@@ -14,6 +14,7 @@ public abstract class Entity {
     protected boolean alive = true;
     protected Sprite sprite;
     protected Image img;
+    protected int time = 30;
 
     public Entity( int x, int y, Image img) {
         this.x = x;
@@ -97,5 +98,13 @@ public abstract class Entity {
 
     public void setAlive(boolean alive) {
         this.alive = alive;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
     }
 }

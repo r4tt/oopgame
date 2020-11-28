@@ -9,7 +9,6 @@ import uet.oop.bomberman.graphics.Sprite;
 
 public class Brick extends Animated {
 
-    int time = 30;
     public Brick(int x, int y, Image img, Sprite sprite) {
         super(x, y, img, sprite);
     }

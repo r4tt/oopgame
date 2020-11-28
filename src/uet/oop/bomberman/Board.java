@@ -121,11 +121,18 @@ public class Board {
         if (check[x / 32][y / 32] > 5) {
             updateObjects(x , y);
         }
+        updatemod(x, y);
     }
 
     public void updatemod(int x, int y) {
-
+        for (int i = 0; i < entities.size(); i++) {
+            Entity tmp = entities.get(i);
+            if (tmp.isAlive() == false) continue;
+            if (tmp.checkhcn(x, y, x + 31, y + 31) == false)
+                tmp.setAlive(false);
+        }
     }
+
     public void updateObjects(int x, int y) {
         for (int i = 0; i < stillObjects.size(); i++) {
             Entity tmp = stillObjects.get(i);
@@ -137,7 +144,14 @@ public class Board {
     }
 
     public void update() {
-        entities.forEach(Entity::update);
+        for (int i = 0; i < entities.size(); i++) {
+            Entity tmp = entities.get(i);
+            tmp.update();
+            if (tmp.getTime() == 0) {
+                entities.remove(i);
+            }
+
+        }
         for (int i = 0; i < stillObjects.size(); i++) {
             Brick tmp = (Brick) stillObjects.get(i);
             tmp.update();

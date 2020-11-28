@@ -46,6 +46,9 @@ public class Bomber extends Mob {
 
     @Override
     public void update() {
+        if (alive == false) {
+            time--;
+        }
         isMoved = false;
         bombList.forEach(Entity::update);
         for (int i = 0; i < bombList.size(); i++) {
@@ -138,6 +141,10 @@ public class Bomber extends Mob {
     }
 
     public void move() {
+        if (alive == false) {
+            //System.out.println("ss");
+            return;
+        }
         int xx = 0;
         int yy = 0;
         if (key.down) xx = xx + 2 * speed;
