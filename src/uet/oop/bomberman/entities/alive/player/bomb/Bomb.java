@@ -5,13 +5,7 @@ import javafx.scene.image.Image;
 import uet.oop.bomberman.Board;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Animated;
-import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.Grass;
-import uet.oop.bomberman.entities.alive.player.Bomber;
 import uet.oop.bomberman.graphics.Sprite;
-
-import java.awt.*;
-import java.util.Objects;
 
 public class Bomb extends Animated {
 

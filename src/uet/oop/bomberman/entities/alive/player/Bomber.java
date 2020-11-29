@@ -1,20 +1,19 @@
 package uet.oop.bomberman.entities.alive.player;
 
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 import uet.oop.bomberman.Board;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.control.Keyboard;
 import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.Wall;
 import uet.oop.bomberman.entities.alive.Mob;
 import uet.oop.bomberman.entities.alive.player.bomb.Bomb;
 import uet.oop.bomberman.graphics.Sprite;
 
+import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PrimitiveIterator;
 
 public class Bomber extends Mob {
     protected Keyboard key = new Keyboard();
@@ -57,8 +56,7 @@ public class Bomber extends Mob {
                 cntbomb--;
             }
         }
-        if (key.space)
-            putbomb();
+        if (key.space)  putbomb();
         if (key.down || key.up || key.left || key.right) {
             if (key.right) direction = 1;
             if (key.left) direction = 2;
@@ -66,14 +64,10 @@ public class Bomber extends Mob {
             if (key.down) direction = 4;
             move();
         }
+        powerup();
     }
 
     public void render(GraphicsContext gc) {
-        /*SnapshotParameters params = new SnapshotParameters();
-        params.setFill(Color.TRANSPARENT);
-        ImageView iv = new ImageView(img);
-        Image base = iv.snapshot(params, null);
-        gc.drawImage(base, y, x);*/
         chooseSprite();
         animate();
         gc.drawImage(sprite.getFxImage(), y, x);
@@ -128,7 +122,7 @@ public class Bomber extends Mob {
             boolean check = this.checkcollision(tmp);
             x -= xx;
             y -= yy;
-            //System.out.println(check);
+
             if (check == true) {
                 tmp.setInvisible(false);
             } else {
@@ -141,10 +135,7 @@ public class Bomber extends Mob {
     }
 
     public void move() {
-        if (alive == false) {
-            //System.out.println("ss");
-            return;
-        }
+        if (alive == false) return;
         int xx = 0;
         int yy = 0;
         if (key.down) xx = xx + 2 * speed;
@@ -161,6 +152,39 @@ public class Bomber extends Mob {
 
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Powerup
+    |--------------------------------------------------------------------------
+     */
+
+    private void powerup() {
+        int tmpx = (x + sprite.get_realHeight() - 1) / 32;
+        int tmpy = (y + sprite.get_realWidth() - 1) / 32;
+        //System.out.println(x +" "+ y +" "+ tmpx +" "+ tmpy +" "+ Board.check[tmpx][tmpy]);
+        int gt = Board.check[tmpx][tmpy];
+        if (gt != 0) {
+            if (gt == 1) incSpeed();
+            if (gt == 2) incFlame();
+            if (gt == 3) incBomb();
+            //Board.check[tmpx][tmpy] = 0;
+            BombermanGame.board.updateItem(tmpx * 32, tmpy * 32);
+        }
+
+
+    }
+
+    private void incBomb() {
+        maxBomb++;
+    }
+
+    private void incFlame() {
+        flame++;
+    }
+
+    private void incSpeed() {
+        speed *= 2;
+    }
 
     /*
     |--------------------------------------------------------------------------

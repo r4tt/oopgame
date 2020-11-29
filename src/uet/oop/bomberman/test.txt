@@ -1,9 +1,9 @@
-xét check
+xét Board.check
 
 0 Grass
-1 = 7 speeditem
-2 = 8 Flameitem
-3 = 9 Bombitem
-4 = 10 gate
+s = 1 = 7 speeditem
+f = 2 = 8 Flameitem
+b = 3 = 9 Bombitem
+x = 4 = 10 gate
 5  Wall
 6 Brick

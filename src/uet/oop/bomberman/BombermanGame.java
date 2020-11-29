@@ -42,10 +42,9 @@ public class BombermanGame extends Application  {
     }
 
     public void start(Stage stage) {
-        bomber = new Bomber(32, 32, Sprite.player_right.getFxImage(), Sprite.player_right, 1, 5, 2);
+        bomber = new Bomber(32, 32, Sprite.player_right.getFxImage(), Sprite.player_right, 1, 1, 1);
 
         board = new Board();
-
         try {
             board.getWH(1);
         }  catch(FileNotFoundException e) {
@@ -55,19 +54,15 @@ public class BombermanGame extends Application  {
         ca = new Canvas(Sprite.SCALED_SIZE * board.getWidth(), Sprite.SCALED_SIZE * board.getHeight());
         board.createMap();
         board.renderall();
-        //board.renderEntity();
 
         // Tao root container
         Group root = new Group();
         root.getChildren().add(ca);
-
         // Tao scene
         Scene scene = new Scene(root);
-
         // Them scene vao stage
         stage.setScene(scene);
         stage.show();
-
 
         scene.setOnKeyPressed(
                 e -> {
@@ -75,9 +70,6 @@ public class BombermanGame extends Application  {
                     keyboard.put(code, true);
                     board.setKeyboard(keyboard);
                     bomber.setKey(keyboard);
-                    //board.renderEntity();
-                    //board.update();
-                    //board.renderall();
                 });
         scene.setOnKeyReleased(
                 e -> {
@@ -92,17 +84,8 @@ public class BombermanGame extends Application  {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                /*long cr = System.nanoTime();
-                if (cr - bg == 60) {
-                 //   System.out.println(cr - bg);
-                    board.update();
-                    board.renderall();
-                }
-                cr = bg;
-                */
                 board.update();
                 board.renderall();
-                //System.out.println("ss");
             }
         };
         timer.start();

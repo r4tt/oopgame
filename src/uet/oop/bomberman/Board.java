@@ -2,21 +2,26 @@ package uet.oop.bomberman;
 
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.control.Keyboard;
-import uet.oop.bomberman.entities.Brick;
+import uet.oop.bomberman.entities.tile.Brick;
 import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.Grass;
-import uet.oop.bomberman.entities.Wall;
+import uet.oop.bomberman.entities.tile.Gate;
+import uet.oop.bomberman.entities.tile.Grass;
+import uet.oop.bomberman.entities.tile.Wall;
 import uet.oop.bomberman.entities.alive.enemy.Balloon;
 import uet.oop.bomberman.entities.alive.enemy.Oneal;
 import uet.oop.bomberman.entities.alive.player.Bomber;
-import uet.oop.bomberman.entities.alive.player.bomb.Bomb;
+import uet.oop.bomberman.entities.tile.powerup.PowerupBombs;
+import uet.oop.bomberman.entities.tile.powerup.PowerupFlames;
+import uet.oop.bomberman.entities.tile.powerup.PowerupSpeed;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.SortedSet;
 
 public class Board {
 
@@ -25,6 +30,7 @@ public class Board {
     public static List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
     private List<Entity> backGround = new ArrayList<>();
+    public static List<Entity> items = new ArrayList<>();
 
     private Keyboard keyboard = new Keyboard();
     public static GraphicsContext gc;
@@ -133,6 +139,19 @@ public class Board {
         }
     }
 
+    public void updateItem(int x, int y) {
+        if (check[x / 32][y / 32] == 4) {
+            //checkwin();
+            return;
+        }
+        check[x / 32][y / 32] = 0;
+        for (int i = 0; i < items.size(); i++) {
+            Entity tmp = items.get(i);
+            if (tmp.getX() == x && tmp.getY() == y)
+                items.remove(i);
+        }
+    }
+
     public void updateObjects(int x, int y) {
         for (int i = 0; i < stillObjects.size(); i++) {
             Entity tmp = stillObjects.get(i);
@@ -156,32 +175,54 @@ public class Board {
             Brick tmp = (Brick) stillObjects.get(i);
             tmp.update();
             if (tmp.getTime() == 0) {
-                int tmpx, tmpy;
-                tmpx = tmp.getX();
-                tmpy = tmp.getY();
-                check[tmpx / 32][tmpy / 32] -= 6;
+                int x = tmp.getX();
+                int y = tmp.getY();
+                check[x / 32][y / 32] -= 6;
+                if (check[x / 32][y / 32] != 0) {
+                    Entity Object = new Gate(x, y, Sprite.portal.getFxImage());
+                    switch (check[x / 32][y / 32]) {
+                        case 1:
+                            Object = new PowerupSpeed(x, y, Sprite.powerup_speed.getFxImage());
+                            break;
+                        case 2:
+                            Object = new PowerupFlames(x, y, Sprite.powerup_flames.getFxImage());
+                            break;
+                        case 3:
+                            Object = new PowerupBombs(x, y, Sprite.powerup_bombs.getFxImage());
+                            break;
+                        case 4:
+                            Object = new Gate(x, y, Sprite.portal.getFxImage());
+                            break;
+                        default:
+                            break;
+                    }
+                    items.add(Object);
+                }
                 stillObjects.remove(i);
             }
         }
+        if (BombermanGame.bomber.isAlive() == false) {
+            createNewBomber();
+        }
+    }
+    public void createNewBomber() {
+        BombermanGame.bomber.setX(32);
+        BombermanGame.bomber.setY(32);
+        BombermanGame.bomber.setAlive(true);
+        //System.out.println(BombermanGame.bomber.getSpeed());
+        //entities.add(BombermanGame.bomber);
+        //System.out.println(BombermanGame.bomber.getSpeed());
     }
 
     public void renderall() {
         gc.clearRect(0, 0, BombermanGame.ca.getWidth(), BombermanGame.ca.getHeight());
         backGround.forEach(g -> g.render(gc));
         stillObjects.forEach(g -> g.render(gc));
-        entities.forEach(g -> g.render(gc));
+        items.forEach(g -> g.render(gc));
         Bomber.bombList.forEach(g -> g.render(gc));
+        entities.forEach(g -> g.render(gc));
     }
 
-    public void renderEntity() {
-        for (int i = 0; i < entities.size(); i++) {
-            Entity tmp = entities.get(i);
-            Entity delTrace = new Grass(tmp.getX(), tmp.getY(), Sprite.grass.getFxImage(), Sprite.grass);
-            delTrace.render(gc);
-        }
-        update();
-        entities.forEach(g -> g.render(gc));
-    }
 
     public Keyboard getKeyboard() {
         return keyboard;
