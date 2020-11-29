@@ -209,9 +209,7 @@ public class Board {
         BombermanGame.bomber.setX(32);
         BombermanGame.bomber.setY(32);
         BombermanGame.bomber.setAlive(true);
-        //System.out.println(BombermanGame.bomber.getSpeed());
-        //entities.add(BombermanGame.bomber);
-        //System.out.println(BombermanGame.bomber.getSpeed());
+
     }
 
     public void renderall() {
