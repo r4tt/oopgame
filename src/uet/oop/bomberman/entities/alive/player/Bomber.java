@@ -68,7 +68,10 @@ public class Bomber extends Mob {
     }
 
     public void render(GraphicsContext gc) {
-        chooseSprite();
+        if (alive == false) {
+            time--;
+            sprite = Sprite.movingSprite(Sprite.mob_dead1, Sprite.mob_dead2, Sprite.mob_dead3, _animate, 60);
+        } else chooseSprite();
         animate();
         gc.drawImage(sprite.getFxImage(), y, x);
     }
@@ -161,7 +164,6 @@ public class Bomber extends Mob {
     private void powerup() {
         int tmpx = (x + sprite.get_realHeight() - 1) / 32;
         int tmpy = (y + sprite.get_realWidth() - 1) / 32;
-        //System.out.println(x +" "+ y +" "+ tmpx +" "+ tmpy +" "+ Board.check[tmpx][tmpy]);
         int gt = Board.check[tmpx][tmpy];
         if (gt != 0) {
             if (gt == 1) incSpeed();
@@ -193,7 +195,6 @@ public class Bomber extends Mob {
      */
 
     private void chooseSprite() {
-        //System.out.println(isMoved);
         if (direction == 3) {
                 sprite = Sprite.player_up;
                 if(isMoved) {

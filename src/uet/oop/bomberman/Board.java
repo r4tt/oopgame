@@ -31,7 +31,7 @@ public class Board {
     private List<Entity> stillObjects = new ArrayList<>();
     private List<Entity> backGround = new ArrayList<>();
     public static List<Entity> items = new ArrayList<>();
-
+    public boolean checkwin = false;
     private Keyboard keyboard = new Keyboard();
     public static GraphicsContext gc;
 
@@ -40,13 +40,14 @@ public class Board {
     Scanner scanner;
 
     void getWH(int lever) throws FileNotFoundException {
-        String mapPath = "test.txt";
-        scanner = new Scanner(new File("res\\levels\\Level1.txt"));
+        String mapPath = "res/levels/Level" + lever + ".txt";
+        scanner = new Scanner(new File(mapPath));
         int n = 0;
         n = scanner.nextInt();
         _height = scanner.nextInt();
         _width = scanner.nextInt();
         scanner.nextLine();
+        //scanner.close();
     }
 
 
@@ -107,7 +108,6 @@ public class Board {
               }
         }
         scanner.close();
-
     }
 
     public void setup() {
@@ -116,8 +116,10 @@ public class Board {
                 check[i][j] = 0;
             }
         }
+        checkwin = false;
         entities.clear();
         stillObjects.clear();
+        items.clear();
         entities.add(BombermanGame.bomber);
         keyboard = new Keyboard();
     }
@@ -141,7 +143,8 @@ public class Board {
 
     public void updateItem(int x, int y) {
         if (check[x / 32][y / 32] == 4) {
-            //checkwin();
+            if (entities.size() == 1)
+                checkwin = true;
             return;
         }
         check[x / 32][y / 32] = 0;
@@ -163,13 +166,15 @@ public class Board {
     }
 
     public void update() {
+        if (checkwin == true) {
+            return;
+        }
         for (int i = 0; i < entities.size(); i++) {
             Entity tmp = entities.get(i);
             tmp.update();
-            if (tmp.getTime() == 0) {
+            if (tmp.getTime() == 0 && i != 0) {
                 entities.remove(i);
             }
-
         }
         for (int i = 0; i < stillObjects.size(); i++) {
             Brick tmp = (Brick) stillObjects.get(i);
@@ -201,24 +206,30 @@ public class Board {
                 stillObjects.remove(i);
             }
         }
-        if (BombermanGame.bomber.isAlive() == false) {
+        if (BombermanGame.bomber.getTime() <= 0) {
             createNewBomber();
         }
     }
     public void createNewBomber() {
         BombermanGame.bomber.setX(32);
         BombermanGame.bomber.setY(32);
+        BombermanGame.bomber.setTime(30);
         BombermanGame.bomber.setAlive(true);
-
     }
 
     public void renderall() {
+        if (checkwin == true) {
+            BombermanGame.win = true;
+            return;
+        }
         gc.clearRect(0, 0, BombermanGame.ca.getWidth(), BombermanGame.ca.getHeight());
+
         backGround.forEach(g -> g.render(gc));
         stillObjects.forEach(g -> g.render(gc));
         items.forEach(g -> g.render(gc));
         Bomber.bombList.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
+        //System.out.println("ss "+ BombermanGame.lever +" "+ BombermanGame.bomber.getX() +" "+ BombermanGame.bomber.getY());
     }
 
 

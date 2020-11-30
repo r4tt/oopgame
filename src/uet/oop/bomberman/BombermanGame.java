@@ -8,6 +8,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 import uet.oop.bomberman.control.Keyboard;
+import uet.oop.bomberman.entities.Animated;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.alive.player.Bomber;
 import uet.oop.bomberman.graphics.Sprite;
@@ -27,10 +28,13 @@ public class BombermanGame extends Application  {
     private Keyboard keyboard = new Keyboard();
 
     public static Board board = new Board();
-    public static Bomber bomber;
+    public static Bomber bomber = new Bomber(32, 32, Sprite.player_right.getFxImage(), Sprite.player_right, 1, 1, 1);
+    public static boolean win = true;
+    public static int lever = 0;
     public static int maxBomb = 1;
     public static int speed = 1;
     public static int flame = 1;
+    public static boolean run = true;
 
     //public static GraphicsContext test;
     public static Canvas ca;
@@ -42,54 +46,67 @@ public class BombermanGame extends Application  {
     }
 
     public void start(Stage stage) {
-        bomber = new Bomber(32, 32, Sprite.player_right.getFxImage(), Sprite.player_right, 1, 1, 1);
 
-        board = new Board();
-        try {
-            board.getWH(1);
-        }  catch(FileNotFoundException e) {
-            //System.out.println("assss");
-        }
-        board.setup();
-        ca = new Canvas(Sprite.SCALED_SIZE * board.getWidth(), Sprite.SCALED_SIZE * board.getHeight());
-        board.createMap();
-        board.renderall();
-
-        // Tao root container
-        Group root = new Group();
-        root.getChildren().add(ca);
-        // Tao scene
-        Scene scene = new Scene(root);
-        // Them scene vao stage
-        stage.setScene(scene);
-        stage.show();
-
-        scene.setOnKeyPressed(
-                e -> {
-                    String code = e.getCode().toString();
-                    keyboard.put(code, true);
-                    board.setKeyboard(keyboard);
-                    bomber.setKey(keyboard);
-                });
-        scene.setOnKeyReleased(
-                e -> {
-                    String code = e.getCode().toString();
-                    keyboard.put(code, false);
-                    bomber.setKey(keyboard);
-                    board.setKeyboard(keyboard);
-                });
-
-
-        long bg = System.nanoTime();
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                board.update();
+                if (win == true) {
+                    xxx();
+                }
+                if (run == true) {
+                    board.update();
+                    board.renderall();
+                }
+            }
+            public void xxx() {
+                bomber.setX(32);
+                bomber.setY(32);
+                lever++;
+                win = false;
+                System.out.println(lever);
+                //lever = 2;
+                if (lever > 3) {
+                    run = false;
+                    return;
+                }
+                    board = new Board();
+                try {
+                    board.getWH(lever);
+                } catch (FileNotFoundException e) {
+                    //System.out.println("assss");
+                }
+                board.setup();
+                ca = new Canvas(Sprite.SCALED_SIZE * board.getWidth(), Sprite.SCALED_SIZE * board.getHeight());
+                board.createMap();
                 board.renderall();
+
+                // Tao root container
+                Group root = new Group();
+                root.getChildren().add(ca);
+                // Tao scene
+                Scene scene = new Scene(root);
+                // Them scene vao stage
+                stage.setScene(scene);
+                stage.show();
+                scene.setOnKeyPressed(
+                        e -> {
+                            String code = e.getCode().toString();
+                            keyboard.put(code, true);
+                            board.setKeyboard(keyboard);
+                            bomber.setKey(keyboard);
+                        });
+                scene.setOnKeyReleased(
+                        e -> {
+                            String code = e.getCode().toString();
+                            keyboard.put(code, false);
+                            bomber.setKey(keyboard);
+                            board.setKeyboard(keyboard);
+                        });
+
             }
         };
         timer.start();
-
+        //System.out.println("ss");
 
 
     }

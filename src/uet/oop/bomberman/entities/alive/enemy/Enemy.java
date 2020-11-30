@@ -1,6 +1,7 @@
 package uet.oop.bomberman.entities.alive.enemy;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.Board;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.alive.Mob;
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.entities.alive.enemy.ai.AI;
@@ -66,7 +67,6 @@ public abstract class Enemy extends Mob {
         } else{
             _steps = 0;
             isMove = false;
-
         }
     }
 
@@ -96,13 +96,15 @@ public abstract class Enemy extends Mob {
 	 */
     public void update() {
         //System.out.println("ss");
-
         animate();
         if (alive == false) {
             time--;
             return;
         }
         calculateMove();
+        if (this.checkcollision(BombermanGame.bomber) == false) {
+            BombermanGame.bomber.setAlive(false);
+        }
     }
 
     public void render(GraphicsContext gc) {
