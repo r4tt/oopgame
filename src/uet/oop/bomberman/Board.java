@@ -2,6 +2,8 @@ package uet.oop.bomberman;
 
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.control.Keyboard;
+import uet.oop.bomberman.entities.alive.enemy.Doll;
+import uet.oop.bomberman.entities.alive.enemy.Kondoria;
 import uet.oop.bomberman.entities.tile.Brick;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.tile.Gate;
@@ -102,6 +104,16 @@ public class Board {
                 }
                 if (c == '2') {
                     object = new Oneal(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.oneal_left1.getFxImage(), Sprite.oneal_left1);
+                    entities.add(object);
+                    continue;
+                }
+                if (c == '3') {
+                    object = new Kondoria(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.kondoria_left1.getFxImage(), Sprite.kondoria_left1);
+                    entities.add(object);
+                    continue;
+                }
+                if (c == '4') {
+                    object = new Doll(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.doll_left1.getFxImage(), Sprite.doll_left1);
                     entities.add(object);
                     continue;
                 }
@@ -229,7 +241,6 @@ public class Board {
         items.forEach(g -> g.render(gc));
         Bomber.bombList.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
-        //System.out.println("ss "+ BombermanGame.lever +" "+ BombermanGame.bomber.getX() +" "+ BombermanGame.bomber.getY());
     }
 
 

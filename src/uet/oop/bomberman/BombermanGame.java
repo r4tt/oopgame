@@ -63,8 +63,6 @@ public class BombermanGame extends Application  {
                 bomber.setY(32);
                 lever++;
                 win = false;
-                System.out.println(lever);
-                //lever = 2;
                 if (lever > 3) {
                     run = false;
                     return;
@@ -73,7 +71,6 @@ public class BombermanGame extends Application  {
                 try {
                     board.getWH(lever);
                 } catch (FileNotFoundException e) {
-                    //System.out.println("assss");
                 }
                 board.setup();
                 ca = new Canvas(Sprite.SCALED_SIZE * board.getWidth(), Sprite.SCALED_SIZE * board.getHeight());
