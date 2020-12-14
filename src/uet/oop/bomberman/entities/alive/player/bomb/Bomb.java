@@ -6,6 +6,7 @@ import uet.oop.bomberman.Board;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Animated;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.sound.SimpleAudioPlayer;
 
 public class Bomb extends Animated {
 
@@ -29,6 +30,8 @@ public class Bomb extends Animated {
         //if (exploded == true) return;
         if (timeToExplode > 0) {
             timeToExplode--;
+            if (timeToExplode == 0)
+                SimpleAudioPlayer.open("BOM_11_M.wav", 1);
         } else {
             if (timeAfterExplode > 0) {
                 timeAfterExplode--;

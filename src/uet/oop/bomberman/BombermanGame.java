@@ -12,6 +12,7 @@ import uet.oop.bomberman.entities.Animated;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.alive.player.Bomber;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.sound.SimpleAudioPlayer;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -63,6 +64,7 @@ public class BombermanGame extends Application  {
                 bomber.setY(32);
                 lever++;
                 win = false;
+                SimpleAudioPlayer.open("soundtrack.wav", 0);
                 if (lever > 3) {
                     run = false;
                     return;

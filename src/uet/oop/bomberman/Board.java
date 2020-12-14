@@ -16,6 +16,7 @@ import uet.oop.bomberman.entities.tile.powerup.PowerupBombs;
 import uet.oop.bomberman.entities.tile.powerup.PowerupFlames;
 import uet.oop.bomberman.entities.tile.powerup.PowerupSpeed;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.sound.SimpleAudioPlayer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -159,6 +160,7 @@ public class Board {
                 checkwin = true;
             return;
         }
+        SimpleAudioPlayer.open("Item.Wav", 1);
         check[x / 32][y / 32] = 0;
         for (int i = 0; i < items.size(); i++) {
             Entity tmp = items.get(i);

@@ -9,6 +9,7 @@ import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.alive.Mob;
 import uet.oop.bomberman.entities.alive.player.bomb.Bomb;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.sound.SimpleAudioPlayer;
 
 import java.security.PrivateKey;
 import java.util.ArrayList;
@@ -95,7 +96,7 @@ public class Bomber extends Mob {
             return;
           }
         cntbomb++;
-
+        SimpleAudioPlayer.open("BOM_SET.wav", 1);
         Bomb bomb = new Bomb(bombidx * Sprite.SCALED_SIZE, bombidy * Sprite.SCALED_SIZE, Sprite.bomb.getFxImage(), Sprite.bomb,flame);
         bomb.render(Board.gc);
         bombList.add(bomb);
