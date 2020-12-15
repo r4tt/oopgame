@@ -52,14 +52,14 @@ public class BombermanGame extends Application  {
             @Override
             public void handle(long l) {
                 if (win == true) {
-                    xxx();
+                    setupgame();
                 }
                 if (run == true) {
                     board.update();
                     board.renderall();
                 }
             }
-            public void xxx() {
+            public void setupgame() {
                 bomber.setX(32);
                 bomber.setY(32);
                 lever++;
